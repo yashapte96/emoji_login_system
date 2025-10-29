@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Pattern Recognition - Sign In</title>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6.1629159505/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3.1620248257/drawing_utils.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+         
+
+    
+</head>
+<body>
+    <div class="container">
+        <div class="logo">👤</div>
+        <h1>Emoji Pattern Recognition</h1>
+        
+        <form id="signInForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="demo_user" required>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step active" id="step1Indicator">1</div>
+                <div class="step-connector" id="stepConnector"></div>
+                <div class="step" id="step2Indicator">2</div>
+            </div>
+            
+            <div class="step-container" id="step1">
+                <div class="form-group">
+                    <label>Emoji Password:</label>
+                    <div class="password-display" id="passwordDisplay">🔒</div>
+                    <div class="password-hint">Select emojis below to create your password</div>
+                    <div class="password-controls">
+                        <button type="button" class="btn btn-secondary btn-small" id="clearPassword">Clear</button>
+                        <button type="button" class="btn btn-secondary btn-small" id="deleteLast">Delete Last</button>
+                    </div>
+                </div>
+                
+                <h3>Select your password emojis:</h3>
+                <div class="emoji-grid" id="emojiGrid"></div>
+                <button type="button" class="btn" id="nextStep">Next Step</button>
+            </div>
+            
+            <div class="step-container" id="step2" style="display: none;">
+                <h3>Enter the numbers for your password emojis:</h3>
+                <div class="shuffled-emojis" id="shuffledEmojis"></div>
+                
+                <div class="input-method-selection">
+                    <label>Select Input Method:</label>
+                    <div class="input-method-buttons">
+                        <button type="button" class="input-method-btn active" id="keyboardMethod">Virtual Keyboard</button>
+                        <button type="button" class="input-method-btn" id="cameraMethod">Hand Detection</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="keyboardInputMethod">
+                    <label for="numberInput">Enter numbers (separated by spaces):</label>
+                    <input type="text" id="numberInput" placeholder="e.g., 3 7 0">
+                    <div class="virtual-keyboard" id="virtualKeyboard"></div>
+                </div>
+                
+                <div class="hand-detection-container" id="handDetectionMethod">
+                    <div class="video-container">
+                        <video id="video" autoplay playsinline></video>
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    
+                    <div class="detection-status loading" id="detectionStatus">
+                        <span class="loading-spinner"></span>Loading hand detection model...
+                    </div>
+                    
+                    <div class="detection-result">
+                        Detected Number: <span class="detected-number" id="detectedNumber">-</span>
+                        <div class="detection-confidence">
+                            Confidence: <span id="confidence">0</span>%
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidence-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <!-- Threshold Timer Display -->
+                        <div class="threshold-timer">
+                            Auto-add in: <span id="timerText">3.0s</span>
+                            <div class="timer-bar">
+                                <div class="timer-fill" id="timerBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detected Numbers Display Box -->
+                    <div class="detected-numbers-box">
+                        <div class="detected-numbers-label">Numbers Detected:</div>
+                        <div class="detected-numbers-display" id="detectedNumbersDisplay"></div>
+                        <div class="clear-buttons-container">
+                            <button type="button" class="clear-last-btn" id="clearLastDetectedBtn" disabled>Clear Last</button>
+                            <button type="button" class="clear-detected-btn" id="clearDetectedBtn">Clear All</button>
+                        </div>
+                    </div>
+                    
+                    <div class="detection-controls">
+                        <button type="button" class="detection-btn" id="startDetectionBtn" disabled>Start Detection</button>
+                        <button type="button" class="detection-btn" id="stopDetectionBtn" disabled>Stop Detection</button>
+                        <button type="button" class="detection-btn" id="addNumberBtn" disabled>Add Number</button>
+                    </div>
+                    
+                    <div class="hand-signs-reference">
+                        <a href="#" id="showHandSignsBtn">Show Hand Signs Reference</a>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-secondary" id="backStep">Back</button>
+                    <button type="submit" class="btn">Sign In</button>
+                </div>
+            </div>
+        </form>
+        
+        <div class="demo-notice">
+            Demo Mode: Create your password using the emoji selection
+        </div>
+        
+        <div class="skip-link">
+            <a href="#" id="skipSignIn">Skip Sign In</a>
+        </div>
+    </div>
+    
+    
+        <script src="script.js"></script>
+    
+</body>
+</html>
